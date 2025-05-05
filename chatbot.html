@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot Turismo Verde</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e9f5ec;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h2 {
+      color: #2d6a4f;
+    }
+    input, button {
+      padding: 10px;
+      margin-top: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+    button {
+      background-color: #40916c;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2d6a4f;
+    }
+    #respuesta {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #d8f3dc;
+      border-left: 4px solid #40916c;
+    }
+  </style>
+</head>
+<body>
+  <h2>Chatbot de Turismo Verde</h2>
+  <input type="text" id="userInput" placeholder="Escribe tu pregunta aquí..." />
+  <button onclick="enviarPregunta()">Enviar</button>
+  <div id="respuesta"></div>
+
+  <script>
+    async function enviarPregunta() {
+      const pregunta = document.getElementById("userInput").value.trim();
+      const respuestaDiv = document.getElementById("respuesta");
+
+      if (!pregunta) {
+        respuestaDiv.innerText = "Por favor, escribe una pregunta.";
+        return;
+      }
+
+      try {
+        const response = await fetch("https://wandering-river-ed74.eliasdanielccolluhuaracorreaa.workers.dev/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: pregunta })
+        });
+
+        const data = await response.json();
+        respuestaDiv.innerText = data.reply;
+      } catch (error) {
+        respuestaDiv.innerText = "Hubo un error al contactar al chatbot.";
+      }
+    }
+  </script>
+</body>
+</html>
